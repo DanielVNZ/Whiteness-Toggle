@@ -15,6 +15,9 @@ using Game.Tools;
 using Game.Prefabs;
 using HarmonyLib;
 using static Game.UI.InGame.InfoviewsUISystem;
+using Colossal.IO.AssetDatabase;
+
+
 
 
 
@@ -25,7 +28,9 @@ namespace Whiteness_Toggle
     public class Mod : IMod
     {
         public static ILog log = LogManager.GetLogger($"{nameof(Whiteness_Toggle)}.{nameof(Mod)}").SetShowsErrorsInUI(false);
+        public static Setting m_Setting;
         private static Harmony _harmony;
+        public WhitenessSystem _System;
 
         
         public void OnLoad(UpdateSystem updateSystem)
@@ -39,7 +44,18 @@ namespace Whiteness_Toggle
             if (GameManager.instance.modManager.TryGetExecutableAsset(this, out var asset))
                 log.Info($"Current mod asset at {asset.path}");
 
-            //updateSystem.UpdateAt<WhitenessSystem>(SystemUpdatePhase.MainLoop);
+            if (_System == null)
+            {
+                _System = new WhitenessSystem(this);
+            }
+
+            m_Setting = new Setting(this, _System);
+            m_Setting.RegisterInOptionsUI();
+            GameManager.instance.localizationManager.AddSource("en-US", new LocaleEN(m_Setting));
+
+            AssetDatabase.global.LoadSettings(nameof(Whiteness_Toggle), m_Setting, new Setting(this, _System));
+
+            
             updateSystem.UpdateAt<WhitenessSystem>(SystemUpdatePhase.Rendering);
 
 
@@ -62,11 +78,27 @@ namespace Whiteness_Toggle
 
         public Game.Tools.ToolSystem _toolSystem;
 
+        public Mod _mod;
+
+
+        public WhitenessSystem()
+        {
+            
+        }
+
+        public WhitenessSystem(Mod mod)
+        {
+            _mod = mod;
+        }
+
 
         protected override void OnCreate()
         {
             base.OnCreate();
+            isPressed = Mod.m_Setting.ToggleWhiteness;
 
+
+            
             SetupKeybinds();
         }
 
@@ -90,7 +122,7 @@ namespace Whiteness_Toggle
             }
         }
 
-        private void SetupKeybinds()
+        public void SetupKeybinds()
         {
             var inputAction = new InputAction("_WhitenessToggle");
             inputAction.AddCompositeBinding("ButtonWithOneModifier")
@@ -114,9 +146,9 @@ namespace Whiteness_Toggle
 
 
 
-        public bool isPressed = false;
+        //public bool isPressed = false;
         public bool whitenessToggle;
-
+        public bool isPressed;
 
         private void OnShiftWPressed(InputAction.CallbackContext context)
         {
@@ -125,12 +157,11 @@ namespace Whiteness_Toggle
 
 
             TriggerUpdate("UseStickyWhiteness");
-
+            Mod.m_Setting.ToggleWhiteness = isPressed;
             
             Mod.log.Info("Keybinds (Shift + W) pressed.");
 
         }
-        public InfoviewPrefab lastActiveInfoView;
 
         public void TriggerUpdate(string property)
         {
@@ -140,6 +171,7 @@ namespace Whiteness_Toggle
                     if (isPressed)
                         Shader.SetGlobalInt("colossal_InfoviewOn", _toolSystem.activeInfoview?.active == true &&
                             whitenessToggle ? 1 : 0);
+                   
                     Mod.log.Info("Toggled Whiteness");
 
                     break;
@@ -163,22 +195,12 @@ namespace Whiteness_Toggle
 
 
 
-       //public bool hasTriggered = false;
+      
 
         protected override void OnUpdate()
         {
 
-           /* if (_toolSystem != null && _toolSystem.activeInfoview != lastActiveInfoView)
-            {
-                lastActiveInfoView = _toolSystem.activeInfoview; // Update the last active info view
-                hasTriggered = false; // Reset the trigger flag when the info view changes
-            }
-
-            if (_toolSystem != null && _toolSystem.activeInfoview?.active == true && !hasTriggered)
-            {
-                TriggerUpdate("UseStickyWhiteness");
-                hasTriggered = true; // Set the flag after executing once
-            }*/
+          
         }
         
         
