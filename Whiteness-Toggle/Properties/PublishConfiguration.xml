@@ -4,45 +4,58 @@
 	<!--Name of the mod to display to players-->
 	<DisplayName Value="Whiteness Toggle" />
 	<!--Short description of the mod-->
-	<ShortDescription Value="A simple mod to toggle the Whiteness screen when placing objects (SHIFT + W)" />
+	<ShortDescription Value="This mod allows you to toggle whiteness when placing objects as well as change this to a custom colour of your choosing." />
 	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
 	<!--LongDescription Value="This is a long description" /-->
 	<LongDescription>
-		A simple mod to toggle the Whiteness screen when placing objects.
+Please feel free to ask any questions, report bugs or provide suggestions here: https://discord.com/channels/1116744928387661895/1240456148033863840
 
-		How To Use:
+This mod allows you to toggle whiteness when placing objects as well as change this to a custom colour of your choosing.
 
-		Keybind: Shift + W
-		Currently I dont know a way to make this easially changable, if the keybind conflicts with anything, please let me know.
+# How To Use:
+**Key bind:** Shift + W
 
-		When pressing the above keybind it toggles between whiteness on/off. Please note that once whiteness is off, youll need to click on a different menu for it to update.
-		As this replaces the Legacy Flavour keybind, this is NOT COMPATIBLE with Legacy Flavour!
-		
-		Q: Why have I made this mod when its included in Legacy Flavour?
-		A: As legacy flavor conflicts with assets currently and the creator is no longer providing fixes for it (besides patch updates). If this ever gets fixed, this mod may be removed (unless there is interest with it being a standalone mod.)
+Please note that once whiteness is off, you'll need to click on a different menu for it to update.
 
-		Credits:
-		* Credit To Optimus_Code - Legacy Flavour.
-		* Credit to Nyoko for help with keybinds.
+# Settings Options Explained:
+**Disable Whiteness** - Use this to disable Whiteness, can also be done with Shift + W
+**Use Custom Overlay** - Use this to enable a custom Overlay using the sliders below or the colour blind settings.
+**The Sliders** - For optimal use keep the slider values low
+**Colour Blindness Options** - These are NOT correct, feedback is welcome and encouraged!
+
+**Q: Why have I made this mod when its included in Legacy Flavor?**
+**A:** As legacy flavor conflicts with assets currently and the creator is no longer providing fixes for it (besides patch updates). If this ever gets fixed, this mod may be removed (unless there is interest with it being a standalone mod.)
+
+# Credits:
+* Credit To **Optimus_Code** - Legacy Flavor.
+* Credit to **Nyoko** for help with key binds and Logo Creation.
+
+# Roadmap:
+* Implement custom key binds.
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<!--Screenshot, can be set multiple times-->
-	<Screenshot Value="" />
+	<Screenshot Value="Properties/Image1.png" />
+	<Screenshot Value="Properties/Image2.png" />
+	<Screenshot Value="Properties/Image3.png" />
 	<!--Tag, can be set multiple times-->
 	<Tag Value="" />
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="1.0.1" />
+	<ModVersion Value="1.0.4" />
 	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.1.1" />
+	<GameVersion Value="1.1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="1.0.1 - Corrected Game Version" />
-	<!--ChangeLog>
-	</ChangeLog-->
+	<ChangeLog>
+		# Patch V1.0.4
+		* Added more colour presets.
+		* Fixed an issue causing very bright neon-like roads.
+		* KNOWN ISSUE: Roads are still Neon.... (sorry I guess!) 
+	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
-	<ExternalLink Type="" Url="" />
+	<ExternalLink Type="github" Url="https://github.com/DanielVNZ/Whiteness-Toggle" />
 </Publish>
