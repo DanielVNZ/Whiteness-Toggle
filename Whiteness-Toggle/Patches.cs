@@ -27,6 +27,10 @@ public static class InfoviewUpdatePatch
             _whitenesSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<WhitenessSystem>();
         }
 
+
+     
+
+
         if (__instance.activeInfoview?.active == true && Mod.m_Setting.ToggleWhiteness == true)
         {
             // Update the shader when the Infoview is updated
@@ -37,7 +41,7 @@ public static class InfoviewUpdatePatch
         if (__instance.activeInfoview?.active == true && Mod.m_Setting.ToggleOverlay == false)
         {
             // Update the shader when the Infoview is updated
-            __instance.activeInfoview.m_DefaultColor = Color.white;
+            __instance.activeInfoview.m_DefaultColor = Color.grey;
            
 
             Mod.log.Info("UPDATED FROM HARMONEY PATCH");
@@ -46,7 +50,7 @@ public static class InfoviewUpdatePatch
 
 
         {
-            Vector4 myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);  // RGBA values normalized
+            Vector4 myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);  // RGBA values normalized
 
 
             if (Mod.m_Setting.m_Protanopia)
@@ -55,7 +59,7 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 128;
                 Mod.m_Setting.Blue = 0;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else if (Mod.m_Setting.m_Deuteranopia)
             {
@@ -63,7 +67,7 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 129;
                 Mod.m_Setting.Blue = 0;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else if (Mod.m_Setting.m_Tritanopia)
             {
@@ -71,7 +75,7 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 64;
                 Mod.m_Setting.Blue = 64;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else if (Mod.m_Setting.m_lightBlue)
             {
@@ -79,7 +83,7 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 5;
                 Mod.m_Setting.Blue = 15;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else if (Mod.m_Setting.m_lightGreen)
             {
@@ -87,7 +91,7 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 15;
                 Mod.m_Setting.Blue = 5;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else if (Mod.m_Setting.m_lightRed)
             {
@@ -95,7 +99,7 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 5;
                 Mod.m_Setting.Blue = 5;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else if (Mod.m_Setting.m_lightYellow)
             {
@@ -103,7 +107,7 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 16;
                 Mod.m_Setting.Blue = 0;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else if (Mod.m_Setting.m_lightPink)
             {
@@ -111,12 +115,12 @@ public static class InfoviewUpdatePatch
                 Mod.m_Setting.Green = 0;
                 Mod.m_Setting.Blue = 8;
 
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
             }
             else
             {
                 // Default color (no colorblindness adjustment)
-                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.5f);
+                myColor = new Vector4(Mod.m_Setting.Red / 255f, Mod.m_Setting.Green / 255f, Mod.m_Setting.Blue / 255f, 0.1f);
                 
             }
             

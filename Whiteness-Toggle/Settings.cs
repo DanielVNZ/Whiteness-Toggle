@@ -1,5 +1,6 @@
 ﻿using Colossal;
 using Colossal.IO.AssetDatabase;
+using Game.Input;
 using Game.Modding;
 using Game.Settings;
 using Game.UI;
@@ -7,14 +8,18 @@ using Game.UI.Widgets;
 using System.Collections.Generic;
 using Whiteness_Toggle;
 
+
 namespace Whiteness_Toggle
 {
     [FileLocation(nameof(Whiteness_Toggle))]
     [SettingsUIGroupOrder(kToggleGroup, kCustomColours, kButtonGroup, kButtonGroup2)]
     [SettingsUIShowGroupName(kToggleGroup, kCustomColours, kButtonGroup, kButtonGroup2)]
+    [SettingsUIKeyboardAction(Mod.kButtonActionName, ActionType.Button, usages: new string[] { Usages.kMenuUsage, "TestUsage" }, interactions: new string[] { "UIButton" })]
+    [SettingsUIGamepadAction(Mod.kButtonActionName, ActionType.Button, usages: new string[] { Usages.kMenuUsage, "TestUsage" }, interactions: new string[] { "UIButton" })]
+    [SettingsUIMouseAction(Mod.kButtonActionName, ActionType.Button, usages: new string[] { Usages.kMenuUsage, "TestUsage" }, interactions: new string[] { "UIButton" })]
     public class Setting : ModSetting
     {
-
+        internal static ModSetting instance { get; private set; }
         private WhitenessSystem _system;
         private Mod _mod;
         private bool currentToggle;
@@ -27,6 +32,7 @@ namespace Whiteness_Toggle
         public const string kButtonGroup = "Button";
         public const string kButtonGroup2 = "Button1";
         public const string kPresets = "Button2";
+        public const string kKeybindingGroup = "KeyBinding";
         public string ColorBlindnessType;
         public bool m_Protanopia;
         public bool m_Deuteranopia;
@@ -39,13 +45,14 @@ namespace Whiteness_Toggle
         public bool m_lightYellow;
 
 
-
+        
 
 
         public Setting(IMod mod, WhitenessSystem system) : base(mod)
         {
             _mod = (Mod)mod;
             _system = system;
+            instance = this;
         }
         public override void SetDefaults()
         {
@@ -62,7 +69,19 @@ namespace Whiteness_Toggle
         }
 
 
-        
+        [SettingsUIKeyboardBinding(BindingKeyboard.W, Mod.kButtonActionName, shift: true)]
+        [SettingsUISection(kSection, kKeybindingGroup)]
+        public ProxyBinding KeyboardBinding { get; set; }
+
+        [SettingsUISection(kSection, kKeybindingGroup)]
+        public bool ResetBindings
+        {
+            set
+            {
+                Mod.log.Info("Reset key bindings");
+                ResetKeyBindings();
+            }
+        }
 
 
         [SettingsUISection(kSection, kToggleGroup)]
@@ -126,12 +145,6 @@ namespace Whiteness_Toggle
         {
             base.Apply();
 
-            if (ToggleWhiteness != currentToggle)
-            {
-                _system.TriggerUpdate("UseStickyWhiteness");
-            }
-            
-
         }
 
 
@@ -157,6 +170,7 @@ namespace Whiteness_Toggle
                 { m_Setting.GetOptionGroupLocaleID(Setting.kCustomColours), "Custom Colours" },
                 { m_Setting.GetOptionGroupLocaleID(Setting.kButtonGroup), "Colour Blind Presets" },
                 { m_Setting.GetOptionGroupLocaleID(Setting.kButtonGroup2), "Normal Presets" },
+                { m_Setting.GetOptionGroupLocaleID(Setting.kKeybindingGroup), "Key bindings" },
 
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.EnableCustomColours)), "Enable Custom Colours" },
@@ -173,13 +187,17 @@ namespace Whiteness_Toggle
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.Alpha)), $"Currently Unavailable - When the overlay is turned on, this changes the opacity" },
                 
                 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ToggleWhiteness)), "Disable Whiteness" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ToggleWhiteness)), $"Use this to enable/disable Whiteness, can also be done with Shift + W" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ToggleWhiteness)), "Toggle Whiteness" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ToggleWhiteness)), $"Use this to enable/disable Whiteness, also works as a keybind, can be changed below. NOTE: if you have an Info View open, must close/open to take effect." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ToggleOverlay)), "Use Custom Overlay" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ToggleOverlay)), $"Use this to enable a custom Overlay using the sliders below or the colour blind settings." },
-                
-                
-                
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.KeyboardBinding)), "Toggle Whiteness" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.KeyboardBinding)), $"Keybind to toggle whiteness. NOTE: if you have an Info View open, must close/open to take effect." },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ResetBindings)), "Reset key bindings" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ResetBindings)), $"Reset all key bindings" },
+
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Protanopia)), "Protanopia" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.Protanopia)), $"Sets mode to Protanopia" },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Deuteranopia)), "Deuteranopia" },
@@ -199,6 +217,9 @@ namespace Whiteness_Toggle
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.LightYellow)), $"Sets mode to Light Yellow." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.LightPink)), "Light Pink" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.LightPink)), $"Sets mode to Light Pink." },
+
+                { m_Setting.GetBindingKeyLocaleID(Mod.kButtonActionName), "Button key" },
+
 
 
             };
