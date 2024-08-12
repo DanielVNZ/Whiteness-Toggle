@@ -1,3 +1,5 @@
+**PDX MODS: https://mods.paradoxplaza.com/mods/80826/Windows/**
+
 Please feel free to ask any questions, report bugs or provide suggestions here: https://discord.com/channels/1116744928387661895/1240456148033863840
 
 This mod allows you to toggle whiteness when placing objects as well as changing this to a custom colour of your choosing.
