@@ -8,30 +8,36 @@
 	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
 	<!--LongDescription Value="This is a long description" /-->
 	<LongDescription>
-Please feel free to ask any questions, report bugs or provide suggestions here: https://discord.com/channels/1116744928387661895/1240456148033863840
+		
+# NOTE: Keybind has CHANGED to SHIFT + E by default. SHIFT + W is now a vanilla key bind for the fast camera movement. You can still change the keybind in settings though!
+		
+## Please feel free to ask any questions, report bugs or provide suggestions here: https://discord.com/channels/1116744928387661895/1240456148033863840
 
-This mod allows you to toggle whiteness when placing objects as well as change this to a custom colour of your choosing.
+This mod allows you to toggle whiteness when placing objects as well as changing this to a custom colour of your choosing.
+How To Use:
 
-# How To Use:
-**Key bind:** Shift + W
+Key binding: **Shift + E** (default) - Can be changed in settings
 
-Please note that once whiteness is off, you'll need to click on a different menu for it to update.
+**Note: If you have an Info View open, must close/open to take effect**
 
 # Settings Options Explained:
+
 **Disable Whiteness** - Use this to disable Whiteness, can also be done with Shift + W
+
 **Use Custom Overlay** - Use this to enable a custom Overlay using the sliders below or the colour blind settings.
+
 **The Sliders** - For optimal use keep the slider values low
+
 **Colour Blindness Options** - These are NOT correct, feedback is welcome and encouraged!
 
-**Q: Why have I made this mod when its included in Legacy Flavor?**
-**A:** As legacy flavor conflicts with assets currently and the creator is no longer providing fixes for it (besides patch updates). If this ever gets fixed, this mod may be removed (unless there is interest with it being a standalone mod.)
-
 # Credits:
-* Credit To **Optimus_Code** - Legacy Flavor.
-* Credit to **Nyoko** for help with key binds and Logo Creation.
 
-# Roadmap:
-* Implement custom key binds.
+Credit To **Optimus_Code** - Legacy Flavor.
+Credit to **Nyoko** for help with key binds and Logo Creation.
+
+# Patch Notes V1.0.7:
+* Changed default key bind to Shift + E 
+
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
@@ -44,18 +50,16 @@ Please note that once whiteness is off, you'll need to click on a different menu
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="1.0.6" />
+	<ModVersion Value="1.0.9" />
 	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.1.*" />
+	<GameVersion Value="1.2.*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog>
-		# Patch V1.0.6
-		* Fixed keybinding
-		* Added option to change keybinding (FINALLY!)
-		* Think the game update fixed the neon roads automatically lol! let me know if you still experience these.
-		
+# Patch V1.0.9
+- Compatibility update for 1.3.3f1
+
 	</ChangeLog>
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
 	<ExternalLink Type="github" Url="https://github.com/DanielVNZ/Whiteness-Toggle" />

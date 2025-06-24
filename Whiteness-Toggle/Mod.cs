@@ -17,6 +17,11 @@ using HarmonyLib;
 using static Game.UI.InGame.InfoviewsUISystem;
 using Colossal.IO.AssetDatabase;
 using Game.Input;
+using Unity.Entities;
+using Unity.Collections;
+using Game.Common;
+using Game.UI.InGame;
+using System.Linq;
 
 
 
@@ -35,6 +40,9 @@ namespace Whiteness_Toggle
         private ProxyAction m_ButtonAction;
 
 
+       
+
+
 
         public const string kButtonActionName = "ButtonBinding";
 
@@ -44,6 +52,7 @@ namespace Whiteness_Toggle
         {
 
             _harmony = new Harmony("com.daniel.whitenessstoggle.whitenesstoggle");
+            Harmony.DEBUG = true;
             _harmony.PatchAll();
             log.Info(nameof(OnLoad));
 
@@ -86,12 +95,24 @@ namespace Whiteness_Toggle
 
             AssetDatabase.global.LoadSettings(nameof(Whiteness_Toggle), m_Setting, new Setting(this, _System));
 
-            
+            updateSystem.UpdateAt<WhitenessSystem>(SystemUpdatePhase.Modification1);
+
+            updateSystem.UpdateAt<WhitenessSystem>(SystemUpdatePhase.MainLoop);
+
             updateSystem.UpdateAt<WhitenessSystem>(SystemUpdatePhase.Rendering);
+
+            updateSystem.UpdateAt<MySystem>(SystemUpdatePhase.PrefabUpdate);
+
+            updateSystem.UpdateAt<MySystem>(SystemUpdatePhase.MainLoop);
+
+            updateSystem.UpdateAt<MySystem>(SystemUpdatePhase.Rendering);
 
 
 
         }
+
+
+        
 
         private void OnButtonActionInteraction(ProxyAction action, InputActionPhase phase)
         {
@@ -99,7 +120,6 @@ namespace Whiteness_Toggle
             {
                 Mod.m_Setting.ToggleWhiteness = !Mod.m_Setting.ToggleWhiteness;
                 Mod.m_Setting.Apply();
-
             }
         }
 
@@ -111,6 +131,7 @@ namespace Whiteness_Toggle
             {
                 m_Setting.UnregisterInOptionsUI();
                 m_Setting = null;
+               
             }
         }
 
@@ -119,15 +140,118 @@ namespace Whiteness_Toggle
 
     }
 
+
+
+
+        public partial class MySystem : UISystemBase
+    {
+
+        private EntityQuery m_Query;
+
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+            m_Query = GetEntityQuery(
+               ComponentType.ReadWrite<Game.Prefabs.AreaColorData>(),
+               ComponentType.Exclude<Temp>(),
+               ComponentType.Exclude<Deleted>());
+
+
+            RequireForUpdate(m_Query);
+
+        }
+        protected override void OnUpdate()
+        {
+            NativeArray<Game.Prefabs.AreaColorData> areacolordataArray
+                 = m_Query.ToComponentDataArray<Game.Prefabs.AreaColorData>(Allocator.Temp);
+
+            for (int i = 0; i < areacolordataArray.Length; i++)
+            {
+                var areacolorRecord = areacolordataArray[i];
+
+                areacolorRecord.m_SelectionEdgeColor = Color.red;
+                areacolorRecord.m_SelectionFillColor = Color.yellow;
+
+                areacolordataArray[i] = areacolorRecord;
+
+                //Mod.log.Info($"Found Record: {areacolordataArray[i]}");
+
+            }
+
+            m_Query.CopyFromComponentDataArray(areacolordataArray);
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
+
+
+
+
+
+
+
+
+
+
+        /*private EntityQuery m_Query;
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+
+            m_Query = GetEntityQuery(
+                ComponentType.ReadWrite<Game.Prefabs.AreaColorData>(),
+                ComponentType.Exclude<Temp>(),
+                ComponentType.Exclude<Deleted>());
+
+            RequireForUpdate(m_Query);
+        }
+
+        protected override void OnUpdate()
+        {
+           NativeArray<Game.Prefabs.AreaColorData> areacolordataArray
+                = m_Query.ToComponentDataArray<Game.Prefabs.AreaColorData>(Allocator.Temp);
+
+            for (int i = 0; i < areacolordataArray.Length; i++)
+            {
+                var areacolorRecord = areacolordataArray[i];
+
+                areacolorRecord.m_SelectionEdgeColor = Color.red;
+                areacolorRecord.m_SelectionFillColor = Color.yellow;
+
+                areacolordataArray[i] = areacolorRecord;
+
+                //Mod.log.Info($"Found Record: {areacolordataArray[i]}");
+
+            }
+
+            m_Query.CopyFromComponentDataArray(areacolordataArray);
+        }
+
+        protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
+        {
+            base.OnGameLoadingComplete(purpose, mode);
+
+            if (!mode.IsGameOrEditor())
+                return;
+        }*/
+
+    }
+
+
     public partial class WhitenessSystem : GameSystemBase
     {
 
         public Game.Tools.ToolSystem _toolSystem;
 
+
         public Mod _mod;
         public bool whitenessToggle;
         public bool isPressed;
         private ProxyAction action;
+        //public bool whiteness = Mod.m_Setting.ToggleWhiteness;
 
 
 
@@ -152,6 +276,7 @@ namespace Whiteness_Toggle
 
 
 
+
             SetupKeybinds();
         }
 
@@ -173,6 +298,8 @@ namespace Whiteness_Toggle
             {
                 Mod.log.Info("TOOL SYSTEM IS NULL");
             }
+
+          
 
 
 

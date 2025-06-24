@@ -43,7 +43,7 @@ namespace Whiteness_Toggle
         public bool m_lightRed;
         public bool m_lightPink;
         public bool m_lightYellow;
-
+        public bool togglewhitenesstesting;
 
         
 
@@ -53,12 +53,14 @@ namespace Whiteness_Toggle
             _mod = (Mod)mod;
             _system = system;
             instance = this;
+
+            
         }
         public override void SetDefaults()
         {
             ToggleWhiteness = false;
             currentToggle = false;
-            TurnOff = true;
+            //TurnOff = true;
             m_Protanopia = false;
             m_Deuteranopia = false;
             m_Tritanopia = false;
@@ -69,7 +71,7 @@ namespace Whiteness_Toggle
         }
 
 
-        [SettingsUIKeyboardBinding(BindingKeyboard.W, Mod.kButtonActionName, shift: true)]
+        [SettingsUIKeyboardBinding(BindingKeyboard.E, Mod.kButtonActionName, shift: true)]
         [SettingsUISection(kSection, kKeybindingGroup)]
         public ProxyBinding KeyboardBinding { get; set; }
 
@@ -83,47 +85,52 @@ namespace Whiteness_Toggle
             }
         }
 
+        
 
         [SettingsUISection(kSection, kToggleGroup)]
-        public bool ToggleWhiteness { get; set; }
+        public bool ToggleWhiteness { get; set; } 
+
 
         [SettingsUISection(kSection, kToggleGroup)]
         public bool ToggleOverlay { get; set; }
 
-
+        
 
         [SettingsUISection(kSection, kCustomColours)]
-        public bool EnableCustomColours { set { m_TurnOff = true; m_Deuteranopia = false; m_Tritanopia = false; m_Protanopia = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; } }
+        public bool EnableCustomColours { set { m_TurnOff = true; m_Deuteranopia = false; m_Tritanopia = false; m_Protanopia = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; ToggleOverlay = true; ToggleWhiteness = false; } }
 
 
-        [SettingsUISlider(min = 0, max = 255, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
+        [SettingsUISlider(min = 0, max = 10, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
         [SettingsUISection(kSection, kCustomColours)]
         public int Red { get; set; }
 
-        [SettingsUISlider(min = 0, max = 255, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
+        [SettingsUISlider(min = 0, max = 10, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
         [SettingsUISection(kSection, kCustomColours)]
         public int Green { get; set; }
 
-        [SettingsUISlider(min = 0, max = 255, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
+        [SettingsUISlider(min = 0, max = 10, step = 1, scalarMultiplier = 1, unit = Unit.kInteger)]
         [SettingsUISection(kSection, kCustomColours)]
         public int Blue { get; set; }
 
-        [SettingsUISlider(min = 0, max = 100, step = 1, scalarMultiplier = 1, unit = Unit.kFloatTwoFractions)]
+        [SettingsUISlider(min = 0, max = 10, step = 1, scalarMultiplier = 1, unit = Unit.kFloatTwoFractions)]
         [SettingsUISection(kSection, kCustomColours)]
         public int Alpha { get; set; }
 
-        
-        [SettingsUISection(kSection2, kButtonGroup)]
-        public bool Protanopia { set { m_Protanopia = true; m_Deuteranopia = false; m_Tritanopia = false; m_TurnOff = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; } }
+
+
 
         [SettingsUISection(kSection2, kButtonGroup)]
-        public bool Deuteranopia { set { m_Deuteranopia = true; m_Protanopia = false; m_Tritanopia = false; m_TurnOff = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; } }
+        public SomeEnum EnumDropdown { get; set; } = SomeEnum.Off;
 
-        [SettingsUISection(kSection2, kButtonGroup)]
-        public bool Tritanopia { set { m_Tritanopia = true; m_Deuteranopia = false; m_Protanopia = false; m_TurnOff = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; } }
 
-        [SettingsUISection(kSection2, kButtonGroup)]
-        public bool TurnOff { set { m_TurnOff = true; m_Deuteranopia = false; m_Tritanopia = false; m_Protanopia = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; } }
+        public enum SomeEnum
+        {
+            Off,
+            Protanopia,
+            Deuteranopia,
+            Tritanopia,
+        }
+
 
 
         [SettingsUISection(kSection3, kButtonGroup2)]
@@ -143,8 +150,29 @@ namespace Whiteness_Toggle
 
         public override void Apply()
         {
-            base.Apply();
+            if (ToggleWhiteness == true)
+            { 
+                ToggleOverlay = false; 
+            }
 
+            if (EnumDropdown == SomeEnum.Protanopia)
+            {
+                m_Protanopia = true; m_Deuteranopia = false; m_Tritanopia = false; m_TurnOff = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; ToggleWhiteness = false; ToggleOverlay = true;
+            }
+            else if (EnumDropdown == SomeEnum.Deuteranopia)
+            {
+                m_Deuteranopia = true; m_Protanopia = false; m_Tritanopia = false; m_TurnOff = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; ToggleWhiteness = false; ToggleOverlay = true;
+            }
+            else if (EnumDropdown == SomeEnum.Tritanopia)
+            {
+                m_Tritanopia = true; m_Deuteranopia = false; m_Protanopia = false; m_TurnOff = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false; ToggleWhiteness = false; ToggleOverlay = true;
+            }
+            else if (EnumDropdown == SomeEnum.Off)
+            {
+                m_TurnOff = true; m_Deuteranopia = false; m_Tritanopia = false; m_Protanopia = false; m_lightBlue = false; m_lightGreen = false; m_lightRed = false;
+            }
+
+            base.Apply();
         }
 
 
@@ -187,7 +215,7 @@ namespace Whiteness_Toggle
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.Alpha)), $"Currently Unavailable - When the overlay is turned on, this changes the opacity" },
                 
                 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ToggleWhiteness)), "Toggle Whiteness" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ToggleWhiteness)), "Tick to turn of Whiteness" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ToggleWhiteness)), $"Use this to enable/disable Whiteness, also works as a keybind, can be changed below. NOTE: if you have an Info View open, must close/open to take effect." },
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ToggleOverlay)), "Use Custom Overlay" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ToggleOverlay)), $"Use this to enable a custom Overlay using the sliders below or the colour blind settings." },
@@ -198,14 +226,6 @@ namespace Whiteness_Toggle
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ResetBindings)), "Reset key bindings" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.ResetBindings)), $"Reset all key bindings" },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Protanopia)), "Protanopia" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Protanopia)), $"Sets mode to Protanopia" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Deuteranopia)), "Deuteranopia" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Deuteranopia)), $"Sets mode to Deuteranopia" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Tritanopia)), "Tritanopia" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Tritanopia)), $"Sets mode to Tritanopia" },
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.TurnOff)), "Turn Off Colour Blind" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.TurnOff)), $"Turns off colour blind mode." },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.LightBlue)), "Light Blue" },
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.LightBlue)), $"Sets mode to Light Blue." },
@@ -219,6 +239,14 @@ namespace Whiteness_Toggle
                 { m_Setting.GetOptionDescLocaleID(nameof(Setting.LightPink)), $"Sets mode to Light Pink." },
 
                 { m_Setting.GetBindingKeyLocaleID(Mod.kButtonActionName), "Button key" },
+
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.EnumDropdown)), "Select a Colour Blind Option" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.EnumDropdown)), $"Select a Colour Blind Option" },
+
+                { m_Setting.GetEnumValueLocaleID(Setting.SomeEnum.Off), "Turn Off" },
+                { m_Setting.GetEnumValueLocaleID(Setting.SomeEnum.Protanopia), "Protanopia" },
+                { m_Setting.GetEnumValueLocaleID(Setting.SomeEnum.Tritanopia), "Tritanopia" },
+                { m_Setting.GetEnumValueLocaleID(Setting.SomeEnum.Deuteranopia), "Deuteranopia" },
 
 
 
